@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">    
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	margin-top: 6px;
+	margin-bottom: 16px;
+	resize: vertical;
+}
+
+input[type=button] {
+	background-color: #4CAF50;
+	color: white;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	background-color: #45a049;
+}
+
+.container {
+	border-radius: 5px;
+	background-color: #f2f2f2;
+	padding: 20px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+<script>
+$(function(){
+	CKEDITOR.replace("detail");		
+	
+	$($("input[type='button']")[0]).click(function(){
+		
+		$("form input[name='content']").val(CKEDITOR.instances['detail'].getData());
+		
+		$.ajax({
+            url:"/board/regist",
+            type:"post",
+			data:$("form").serialize(), 
+            success:function(result){
+                //쉬는 시간 갖고, 테스트해보기!! mysql 임~!
+				alert("등록된 결과는 "+result);
+				location.href="/board/list";
+            }
+        });
+    });
+    
+	//목록버튼 
+	$($("input[type='button']")[1]).click(function(){
+		location.href="/board/list";
+	});
+
+});
+</script>
+</head>
+<body>
+
+	<h3>Contact Form</h3>
+
+	<div class="container">
+		<form name="form1">
+			<input type="hidden" name="content">
+			<input type="text" 	name="title" placeholder="Your title.."> 
+			<input type="text" name="writer" placeholder="Your name.."> 
+			<textarea id="detail" placeholder="Write something.."style="height: 200px"></textarea>
+
+			<input type="button" value="등록">
+			<input type="button" value="목록">
+		</form>
+	</div>
+
+</body>
+</html>
+
+
+
